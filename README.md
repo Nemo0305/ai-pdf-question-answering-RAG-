@@ -1,109 +1,109 @@
-📘 AI PDF Question Answering System (RAG-based)
+📄 AI PDF Question Answering System (RAG + OCR)
 
-An end-to-end Retrieval-Augmented Generation (RAG) system that allows users to upload any PDF document and ask natural language questions, with answers generated strictly from the uploaded document.
+A Document Intelligence system that allows users to upload any PDF document (text-based or scanned), automatically processes it using OCR + embeddings, and enables context-aware question answering using a Retrieval-Augmented Generation (RAG) pipeline.
 
-The system dynamically processes each uploaded PDF, builds a document-specific semantic index, and generates contextual, multi-sentence answers using modern embedding models and large language models.
+Built with Streamlit, FAISS, Sentence Transformers, and Google Gemini (2.5 Flash).
 
-🚀 Key Features
+🚀 Features
 
-📄 User PDF Upload (any document)
+📤 Upload any PDF document (reports, standards, research papers, scanned PDFs)
 
-🔍 Document-grounded Question Answering
+🔍 Automatic text extraction + OCR (for image-based PDFs)
 
-🧠 Retrieval-Augmented Generation (RAG)
+🧠 Semantic search using SentenceTransformer embeddings
 
-♻️ No context leakage between PDFs
+📚 Context-aware answers using RAG architecture
 
-🧩 Dynamic indexing per document
+✨ Answers are strictly grounded in the uploaded document
 
-✨ Clean, professional Streamlit UI
+⚡ Fast and lightweight (optimized for local systems)
 
-⚡ Fast semantic search using FAISS
+🎨 Clean, professional Streamlit UI
 
-🤖 Answer generation using Gemini 2.5 Flash
-
-🛡️ Hallucination-controlled (context-only answers)
-
-🧠 System Architecture
-User PDF
-   ↓
-PDF Ingestion (PyMuPDF)
-   ↓
-Text Chunking
-   ↓
-Sentence Embeddings
-   ↓
-FAISS Vector Index (per PDF)
-   ↓
-Semantic Retrieval
-   ↓
-LLM (Gemini 2.5 Flash)
-   ↓
-Contextual Answer
+🧠 Architecture Overview
+User PDF Upload
+      ↓
+PDF Parsing (Text + OCR)
+      ↓
+Chunking & Embeddings
+      ↓
+FAISS Vector Index
+      ↓
+Relevant Context Retrieval
+      ↓
+Gemini LLM Answer Generation
 
 🛠️ Tech Stack
-Component	Technology
-UI	Streamlit
-PDF Processing	PyMuPDF
-Embeddings	Sentence-Transformers
-Vector Store	FAISS
-LLM	Gemini 2.5 Flash
-Backend	Python
-Env Management	python-dotenv
+| Component   | Technology                     |
+| ----------- | ------------------------------ |
+| UI          | Streamlit                      |
+| PDF Parsing | PyMuPDF (fitz), Tesseract OCR  |
+| Embeddings  | Sentence-Transformers (MiniLM) |
+| Vector DB   | FAISS                          |
+| LLM         | Google Gemini 2.5 Flash        |
+| Language    | Python                         |
+
 📂 Project Structure
-multi_modal_rag/
+ai-pdf-question-answering-rag/
 │
 ├── src/
-│   ├── app_streamlit.py      # Streamlit UI
-│   ├── ingestion.py          # PDF ingestion & chunking
-│   ├── embeddings.py         # Embedding + FAISS indexing
-│   ├── retrieval.py          # Semantic retrieval
-│   ├── qa_engine.py          # RAG-based QA logic
-│   ├── config.py             # Paths & configuration
+│   ├── app_streamlit.py     # Streamlit UI
+│   ├── ingestion.py         # PDF + OCR processing
+│   ├── embeddings.py        # Embedding & FAISS indexing
+│   ├── retrieval.py         # Context retrieval
+│   ├── qa_engine.py         # RAG + Gemini logic
+│   ├── session_index.py     # Per-session index handling
+│   └── config.py            # Paths & configurations
 │
-├── data/
-│   ├── processed/            # Generated text chunks
-│
-├── vector_store/             # FAISS indexes (per PDF)
-│
-├── .env                      # API keys
 ├── requirements.txt
-└── README.md
+├── README.md
+└── .gitignore
 
 ⚙️ Installation & Setup
 1️⃣ Clone the Repository
-git clone <your-repo-url>
-cd multi_modal_rag
+git clone https://github.com/<your-username>/ai-pdf-question-answering-rag.git
+cd ai-pdf-question-answering-rag
 
-2️⃣ Create & Activate Virtual Environment
+2️⃣ Create Virtual Environment
 python -m venv .venv
-.venv\Scripts\activate    # Windows
+.venv\Scripts\activate   # Windows
 
 3️⃣ Install Dependencies
 pip install -r requirements.txt
 
-4️⃣ Configure Environment Variables
+4️⃣ Install Tesseract OCR
+🔹 Windows
 
-Create a .env file in the project root:
+Download from:
+https://github.com/UB-Mannheim/tesseract/wiki
 
-GOOGLE_API_KEY=your_google_api_key_here
+Install and note the path, e.g.:
+
+C:\Program Files\Tesseract-OCR\tesseract.exe
+
+
+Add it to System PATH
+
+Verify:
+
+tesseract --version
+
+5️⃣ Set Environment Variables
+
+Create a .env file:
+
+GOOGLE_API_KEY=your_gemini_api_key_here
 GEMINI_MODEL=gemini-2.5-flash
 
 ▶️ Run the Application
 streamlit run src/app_streamlit.py
 
 
-Then open the browser at:
+Then open:
 
 http://localhost:8501
 
-🧪 How to Use
-
-Upload any PDF document
-
-Wait for processing & indexing
-
-Ask questions like:
+🧪 Example Questions
 
 Summarize this document
 
@@ -111,43 +111,33 @@ What are the key findings?
 
 What risks are discussed?
 
+Explain the methodology used
+
 Give an executive summary
 
-Receive document-grounded, multi-sentence answers
+⚠️ Important Notes
 
-🔒 Important Design Decisions
+Answers are generated only from the uploaded document
 
-Each uploaded PDF gets a fresh vector index
+No external knowledge is used
 
-Old document embeddings are discarded
+OCR ensures support for scanned PDFs
 
-Prevents cross-document contamination
+Results may require human verification
 
-QA engine is instantiated per document
+🎓 Academic Relevance
 
-Summaries and answers are generated only from retrieved context
+This project demonstrates:
 
-⚠️ Disclaimer
+Retrieval-Augmented Generation (RAG)
 
-Answers are generated solely from the uploaded document and may require human verification for critical use cases.
+Semantic Search with FAISS
 
-🎓 Academic / Interview Highlights
+OCR-based document intelligence
 
-Implements true RAG architecture
+Real-world LLM integration
 
-Avoids common pitfalls like context leakage
-
-Demonstrates understanding of:
-
-Semantic search
-
-Vector databases
-
-Prompt engineering
-
-LLM grounding
-
-UI/UX for ML systems
+End-to-end AI system design
 
 👨‍💻 Author
 

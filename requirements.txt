@@ -17,4 +17,8 @@ faiss-cpu
 streamlit
 python-dotenv
 google-generativeai
+pymupdf
+pytesseract
+pdf2image
+Pillow
 
